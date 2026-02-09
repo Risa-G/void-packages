@@ -1,0 +1,31 @@
+# Template file for 'libnbd'
+pkgname=libnbd
+version=1.24
+revision=1
+build_style=gnu-configure
+hostmakedepends="pkg-config ocaml automake autoconf libtool"
+makedepends="libxml2 gnutls-devel"
+depends="libxml2 gnutls"
+short_desc="Network Block Device client library in userspace"
+maintainer="Chase Dillard <c.dillard@pm.me>"
+license="LGPL-2.1-or-later"
+homepage="https://libguestfs.org/libnbd.3.html"
+distfiles="https://download.libguestfs.org/${pkgname}/${version}-stable/${pkgname}-${version}.0.tar.gz"
+checksum=f5bdafd6618dde23f0718ad594d63890a6e6d8caa1e4b00f3a435c700417e6ef
+
+TARGET=${XBPS_TARGET_MACHINE//-musl/}
+
+case "$XBPS_LIBC" in
+	glibc)
+	LIBC=gnu
+	;;
+	*)
+	LIBC=musl
+	;;
+esac
+
+do_configure() {
+	autoreconf -fiv
+	CONFIGURE_ARGS="--prefix=/usr"
+	./configure ${CONFIGURE_ARGS} --host=${TARGET}-pc-linux-${LIBC}
+}

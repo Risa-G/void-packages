@@ -1,0 +1,13 @@
+diff --git a/cmake/modules/BuildISAL.cmake b/cmake/modules/BuildISAL.cmake
+index fa1476cabf8..cf00f4acc5d 100644
+--- a/cmake/modules/BuildISAL.cmake
++++ b/cmake/modules/BuildISAL.cmake
+@@ -9,7 +9,7 @@ function(build_isal)
+   # imported targets need it early for INTERFACE_INCLUDE_DIRECTORIES
+   file(MAKE_DIRECTORY "${isal_INCLUDE_DIR}")
+ 
+-  set(configure_cmd env CC=${CMAKE_C_COMPILER} ./configure --prefix=${isal_INSTALL_DIR})
++  set(configure_cmd env AS="" CC=${CMAKE_C_COMPILER} ./configure --prefix=${isal_INSTALL_DIR})
+   # build a static library with -fPIC that we can link into crypto/compressor plugins
+   list(APPEND configure_cmd --with-pic --enable-static --disable-shared)
+ 

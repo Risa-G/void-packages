@@ -1,0 +1,62 @@
+# Template file for 'ceph'
+pkgname=ceph
+version=20.2.0
+revision=1
+build_style=cmake
+configure_args="
+	-DWITH_SYSTEMD=OFF
+	-DWITH_SYSTEM_UTF8PROC=ON
+	-DWITH_SYSTEM_LIBURING=ON
+	-DWITH_SYSTEM_ROCKSDB=ON
+	-DWITH_SYSTEM_ZSTD=ON
+	-DCMAKE_BUILD_TYPE=RelWithDebInfo
+	-DWITH_SYSTEM_NPM=ON
+	-DWITH_TESTS=OFF
+	-DWITH_GRAFANA=ON
+	-DWITH_OCF=ON
+	-DWITH_RBD_RWL=ON
+	-DWITH_RADOSGW_ARROW_FLIGHT=ON
+	-DWITH_RBD_MIRROR=ON
+	-DWITH_RBD_SSD_CACHE=ON
+	-DWITH_BLUESTORE_PMEM=ON
+	-DCMAKE_INSTALL_PREFIX=/usr"
+hostmakedepends="python3-Sphinx python3-Cython
+	pkg-config jq gperf automake autoconf
+	libtool lz4 cmake nodejs doxygen
+	protobuf which nasm"
+makedepends="rdma-core-devel eudev-libudev-devel
+	libblkid-devel keyutils-devel lmdb-devel
+	libldap-devel fuse-devel cryptsetup-devel
+	libnbd sqlite-devel snappy-devel python3-yaml
+	liblz4-devel libcurl-devel expat-devel
+	oath-toolkit-devel python-devel lttng-ust-devel
+	babeltrace-devel libicu78-devel thrift-devel
+	libcap-devel lua-devel libutf8proc-devel
+	libnl3-devel libcap-ng-devel rabbitmq-c-devel
+	librdkafka-devel gtest-devel liburing-devel
+	rocksdb-devel libzstd-devel libevent-devel
+	xfsprogs-devel grpc-devel gflags-devel
+	libndctl-devel libdaxctl-devel"
+depends="python3-packaging python3-yaml python3-prettytable"
+short_desc="Scalable distributed storage system"
+maintainer="Chase Dillard <c.dillard@pm.me>"
+license="GPL-2.0-or-later, LGPL-2.0-or-later, LGPL-3.0-or-later"
+homepage="https://ceph.io/"
+distfiles="https://download.ceph.com/tarballs/ceph-${version}.tar.gz"
+checksum=8de064d69831ef327339539f233c78ec827fa351c40ced9a9916f0b4174c6685
+
+export CMAKE_POLICY_VERSION_MINIMUM=3.5
+
+do_configure() {
+	./do_cmake.sh $configure_args
+}
+
+post_install() {
+	mv ${DESTDIR}/usr/sbin/* ${DESTDIR}/usr/bin/
+
+	mkdir -p ${DESTDIR}/etc
+	mkdir -p ${DESTDIR}/usr/share/bash-completion/completions
+
+	mv ${DESTDIR}/usr/etc/bash_completion.d/* ${DESTDIR}/usr/share/bash-completion/completions
+	mv ${DESTDIR}/usr/etc/* ${DESTDIR}/etc/
+}

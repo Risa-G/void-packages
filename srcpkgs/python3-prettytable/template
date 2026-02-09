@@ -1,0 +1,13 @@
+# Template file for 'python3-prettytable'
+pkgname=python3-prettytable
+version=3.17.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatch-vcs"
+depends="python3-wcwidth"
+short_desc="Prints tables in an attractive ASCII form."
+maintainer="Chase Dillard <c.dillard@pm.me>"
+license="BSD-3-Clause"
+homepage="https://github.com/prettytable/prettytable"
+distfiles="${PYPI_SITE}/p/prettytable/prettytable-${version}.tar.gz"
+checksum=59f2590776527f3c9e8cf9fe7b66dd215837cca96a9c39567414cbc632e8ddb0
